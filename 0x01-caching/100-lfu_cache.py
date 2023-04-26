@@ -1,19 +1,26 @@
 #!/usr/bin/env python3
-"""Advanced task: lfu caching"""
+"""Advanced task: lfu caching
+"""
 from collections import OrderedDict
 from base_caching import BaseCaching
 
 
 class LFUCache(BaseCaching):
-    """LFUCache """
+    """Represents an object that allows storing and
+    retrieving items from a dictionary with a LFU
+    removal mechanism when the limit is reached.
+    """
     def __init__(self):
-        """Initializes"""
+        """Initializes the cache.
+        """
         super().__init__()
         self.cache_data = OrderedDict()
         self.keys_freq = []
 
     def __reorder_items(self, mru_key):
-        """Reordering the item"""
+        """Reorders the items in this cache based on the most
+        recently used item.
+        """
         max_positions = []
         mru_freq = 0
         mru_pos = 0
@@ -36,7 +43,8 @@ class LFUCache(BaseCaching):
         self.keys_freq.insert(ins_pos, [mru_key, mru_freq])
 
     def put(self, key, item):
-        """putting an item in the cache."""
+        """Adds an item in the cache.
+        """
         if key is None or item is None:
             return
         if key not in self.cache_data:
@@ -57,7 +65,8 @@ class LFUCache(BaseCaching):
             self.__reorder_items(key)
 
     def get(self, key):
-        """function that retrieves an item by key"""
+        """Retrieves an item by key.
+        """
         if key is not None and key in self.cache_data:
             self.__reorder_items(key)
         return self.cache_data.get(key, None)
